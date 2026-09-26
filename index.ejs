@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>EJS & MongoDB Project</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 25px;
+        }
+
+        input {
+            padding: 7px;
+            margin-right: 8px;
+        }
+
+        button {
+            padding: 7px 14px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dad9d9;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: blue;
+        }
+
+        a.delete {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>
+        <%= editUser ? 'Edit User' : 'Add New User' %>
+    </h2>
+
+    <form action="<%= editUser ? '/update/' + editUser._id : '/add' %>" method="POST">
+        <input type="text" name="name" placeholder="Name" value="<%= editUser ? editUser.name : '' %>" required>
+        <input type="email" name="email" placeholder="Email" value="<%= editUser ? editUser.email : '' %>" required>
+        <input type="text" name="phone" placeholder="Mobile Number" value="<%= editUser ? editUser.phone : '' %>"
+            required>
+
+        <button type="submit">
+            <%= editUser ? 'Update' : 'Add User' %>
+        </button>
+        <% if (editUser) { %>
+            <a href="/">Cancel</a>
+            <% } %>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (users.length===0) { %>
+                <tr>
+                    <td colspan="4">No users found.</td>
+                </tr>
+                <% } %>
+                    <% users.forEach(user=> { %>
+                        <tr>
+                            <td>
+                                <%= user.name %>
+                            </td>
+                            <td>
+                                <%= user.email %>
+                            </td>
+                            <td>
+                                <%= user.phone %>
+                            </td>
+                            <td>
+                                <a href="/edit/<%= user._id %>">Edit</a>
+                                <a href="/delete/<%= user._id %>" class="delete"
+                                    onclick="return alert('Delete this user?')">Delete</a>
+                            </td>
+                        </tr>
+                        <% }) %>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
